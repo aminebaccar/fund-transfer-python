@@ -178,19 +178,6 @@ pytest -v
 #### **📌 Saving Logs to a File**  
 All test execution details are saved in **`test_results.log`** for later analysis.  
 
-#### **📌 Manually Checking the Log File**
-To view the latest test logs, open:  
-```bash
-cat test_results.log  # Linux/Mac
-type test_results.log # Windows
-```
-
-#### **📌 Running Tests with Logging**
-Ensure logs are captured properly by running:  
-```bash
-pytest --log-cli-level=INFO
-```
-
 #### **📌 Reset Log File Before Each Run**
 If needed, clear the log file before running tests:  
 ```bash
