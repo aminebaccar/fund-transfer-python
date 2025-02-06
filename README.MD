@@ -9,7 +9,7 @@ The tests are implemented using **Python + Pytest + Requests** and ensure the ap
 ## 🚀 Prerequisites  
 Before running the tests, ensure the following dependencies are installed:  
 
-- **Python 3.8+** (Recommended: Python 3.10+)  
+- **Python 3.8+** (For executing the tests)
 - **pip** (Python package manager)  
 - **Git** (For cloning the repository)  
 
@@ -165,11 +165,47 @@ View results by opening **`report.html`** in your browser.
 
 ---
 
+### **📝 Logging Test Results**  
+
+To track test execution details, a logging system is implemented. Logs are saved both **to a file (`test_results.log`) and displayed in the console** for real-time monitoring.  
+
+#### **📌 Viewing Logs in the Console**
+Logs are automatically displayed when running tests:  
+```bash
+pytest -v
+```
+
+#### **📌 Saving Logs to a File**  
+All test execution details are saved in **`test_results.log`** for later analysis.  
+
+#### **📌 Manually Checking the Log File**
+To view the latest test logs, open:  
+```bash
+cat test_results.log  # Linux/Mac
+type test_results.log # Windows
+```
+
+#### **📌 Running Tests with Logging**
+Ensure logs are captured properly by running:  
+```bash
+pytest --log-cli-level=INFO
+```
+
+#### **📌 Reset Log File Before Each Run**
+If needed, clear the log file before running tests:  
+```bash
+echo "" > test_results.log  # Linux/Mac
+echo. > test_results.log    # Windows
+```
+
+This ensures each test run starts with a **fresh log file** instead of appending logs.
+
+---
+
 ## 🎯 Additional Notes  
 - Ensure that the **API backend is running** before executing tests.  
 - The test suite is **modular**, allowing easy additions of new test cases.
 
 ---
-
 ## 📬 Contact  
 For any issues or suggestions, reach out via email.

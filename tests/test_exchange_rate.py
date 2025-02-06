@@ -1,5 +1,7 @@
 import pytest
 from utils.api_client import APIClient
+from utils.logger import log_test_result
+
 
 @pytest.fixture(scope="module")
 def setup_accounts_with_different_currencies():
@@ -17,30 +19,40 @@ def setup_accounts_with_different_currencies():
 
 def test_successful_currency_exchange(setup_accounts_with_different_currencies):
     """Test fund transfer with currency conversion."""
+    test_name = "test_successful_currency_exchange"
     debit_id, credit_id = setup_accounts_with_different_currencies
 
     debit_before = APIClient.get_account(debit_id).json()["balance"]
     credit_before = APIClient.get_account(credit_id).json()["balance"]
 
     response = APIClient.transfer(debit_id, credit_id, 100, "EUR")
-    assert response.status_code == 200, f"Currency exchange transfer failed: {response.text}"
 
-    debit_after = APIClient.get_account(debit_id).json()["balance"]
-    credit_after = APIClient.get_account(credit_id).json()["balance"]
-
-    assert debit_after < debit_before, "Debit account balance should decrease"
-    assert credit_after > credit_before, "Credit account balance should increase"
+    try:
+        assert response.status_code == 200, f"Currency exchange transfer failed: {response.text}"
+        debit_after = APIClient.get_account(debit_id).json()["balance"]
+        credit_after = APIClient.get_account(credit_id).json()["balance"]
+        assert debit_after < debit_before, "Debit account balance should decrease"
+        assert credit_after > credit_before, "Credit account balance should increase"
+        log_test_result(test_name, "PASS")
+    except AssertionError as e:
+        log_test_result(test_name, "FAIL", str(e))
+        raise
 
 def test_transfer_fails_when_exchange_rate_unavailable(setup_accounts_with_different_currencies):
     """Test fund transfer fails if exchange rate cannot be retrieved (invalid currency)."""
+    test_name = "test_transfer_fails_when_exchange_rate_unavailable"
     debit_id, credit_id = setup_accounts_with_different_currencies
 
     invalid_currency = "XXX"  # Fake currency to force failure
     response = APIClient.transfer(debit_id, credit_id, 100, invalid_currency)
 
-    assert response.status_code == 400, f"Expected 400 but got {response.status_code}"
-
-    json_response = response.json()
-    assert "fieldErrors" in json_response, "Response should contain fieldErrors"
-    assert "currency" in json_response["fieldErrors"], "Error should be related to currency"
-    assert "not an uppercase char sequence of 3 letters" in json_response["fieldErrors"]["currency"]
+    try:
+        assert response.status_code == 400, f"Expected 400 but got {response.status_code}"
+        json_response = response.json()
+        assert "fieldErrors" in json_response, "Response should contain fieldErrors"
+        assert "currency" in json_response["fieldErrors"], "Error should be related to currency"
+        assert "not an uppercase char sequence of 3 letters" in json_response["fieldErrors"]["currency"]
+        log_test_result(test_name, "PASS")
+    except AssertionError as e:
+        log_test_result(test_name, "FAIL", str(e))
+        raise
