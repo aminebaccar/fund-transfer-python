@@ -1,5 +1,7 @@
 # Fund Transfer API Test Automation  
 
+[![Pytest API Tests](https://github.com/aminebaccar/fund-transfer-python/actions/workflows/pytest-ci.yml/badge.svg)](https://github.com/aminebaccar/fund-transfer-python/actions/workflows/pytest-ci.yml)
+
 ## 📌 Overview  
 This project contains automated tests for the **Fund Transfer API**, which allows performing **account creation, deposits, withdrawals, fund transfers, and currency conversions**.  
 The tests are implemented using **Python + Pytest + Requests** and ensure the application's functionality, error handling, and concurrency support.
@@ -186,6 +188,19 @@ echo. > test_results.log    # Windows
 ```
 
 This ensures each test run starts with a **fresh log file** instead of appending logs.
+
+---
+
+### **🔄 CI/CD Integration**  
+This project uses **GitHub Actions** for automated API testing.  
+Tests run on **every push, pull request, or manual trigger**.
+
+📂 **GitHub Actions Workflow:** `.github/workflows/pytest-ci.yml`  
+- **Runs Pytest tests** with an HTML report.  
+- **Uploads test reports** to GitHub Actions artifacts.  
+
+🔹 **Manually Trigger:**  
+Go to **GitHub Actions** → Select workflow → **Click "Run workflow"**.  
 
 ---
 
