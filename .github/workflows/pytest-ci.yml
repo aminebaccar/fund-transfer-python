@@ -1,0 +1,41 @@
+name: Pytest API Tests
+
+on:
+  workflow_dispatch:  
+  push:
+    branches:
+      - main
+      - CICD
+      - "test/**"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set Up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🏃 Run Pytest Tests
+        run: |
+          pytest --html=reports/test-report.html --self-contained-html
+
+      - name: 📤 Upload Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-report
+          path: reports/test-report.html
